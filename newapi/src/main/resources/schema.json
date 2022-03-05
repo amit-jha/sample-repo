@@ -1,0 +1,21 @@
+{
+  "schema": {
+    "title": {
+      "type": "text"
+    },
+    "author": {
+      "type": "text"
+    },
+    "publishedAt": {
+      "type": "datetime",
+      "facet": true,
+      "analyzer": {
+        "class": "com.aj.newsapi.analyser.PublishedAtAnalysier",
+        "format": "yyyy-mm-ddThh:mm:ssZ"
+      }
+    },
+    "description": {
+      "type": "text"
+    }
+  }
+}
