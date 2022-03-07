@@ -10,7 +10,7 @@ pipeline{
         stage("Deploy"){
             steps(){
                 echo("Deploying")
-                docker run hello-world
+                sh "docker run hello-world"
             }
         }
     }
