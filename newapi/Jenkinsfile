@@ -23,5 +23,5 @@ pipeline{
 
 def unitTesting(){
     readpom = readMavenPom file: 'project/newapi/pom.xml'
-    sh "mvn clean test"
+    sh "mvn clean test project/newapi/pom.xml"
 }
