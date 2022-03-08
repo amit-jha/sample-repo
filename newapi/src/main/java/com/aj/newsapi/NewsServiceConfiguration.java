@@ -7,9 +7,11 @@ import lombok.ToString;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.util.Assert;
 
 /**
- * This class maps configuration property
+ * This class initialized beans, application configuration and
+ * maps configuration property and
  *
  */
 @Configuration
@@ -20,10 +22,14 @@ public class NewsServiceConfiguration {
     private String accessKey;
     private String offlineMode;
 
+    /**
+     * newsapi client is bean gets created just after application initialized.
+     * @return
+     */
 
    @Bean
     public NewsApiClient initializeClient(){
+//       Assert.notNull(this.accessKey, "NewsApi key cannot be null");
        return new NewsApiClient(this.accessKey);
     }
-
 }

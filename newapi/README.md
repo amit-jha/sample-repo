@@ -3,8 +3,6 @@
 2. SpringBoot 2.6.3
 
 
-
-
 ### Deployment Instruction
 1. Config Server 
    ```

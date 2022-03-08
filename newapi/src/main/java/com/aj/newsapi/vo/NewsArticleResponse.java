@@ -1,8 +1,9 @@
 package com.aj.newsapi.vo;
 
+import com.aj.newsapi.exceptions.ApplicationException;
+import com.aj.newsapi.util.NewsApiResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.kwabenaberko.newsapilib.models.response.ArticleResponse;
 import lombok.Getter;
 
 import java.time.OffsetDateTime;
@@ -32,7 +33,7 @@ import static java.util.stream.Collectors.groupingBy;
 public class NewsArticleResponse {
 
     @JsonIgnore
-    private ArticleResponse articleResponse;
+    private NewsApiResponse newsApiResponse;
 
     @JsonProperty("articles")
     private List<NewsArticle> newsArticles;
@@ -44,24 +45,28 @@ public class NewsArticleResponse {
     private Map<String, Map<String, List<NewsArticle>>> groupMap;
 
 
-    public NewsArticleResponse(ArticleResponse articleResponse) {
-        this.articleResponse = articleResponse;
+    public NewsArticleResponse(NewsApiResponse newsApiResponse) {
+        this.newsApiResponse = newsApiResponse;
         this.groupMap = new HashMap<>();
     }
 
-    public NewsArticleResponse build() {
-        this.totalResults = this.articleResponse.getTotalResults();
-        this.newsArticles = this.articleResponse.getArticles()
-                .stream()
-                .map(article -> new NewsArticle.Builder()
-                        .title(article.getTitle())
-                        .author(article.getAuthor())
-                        .description(article.getDescription())
-                        .publishedAt(article.getPublishedAt())
-                        .build()
-                )
-                .collect(Collectors.toList());
-        return this;
+    public NewsArticleResponse build() throws ApplicationException {
+            if (this.newsApiResponse == null)
+                throw new ApplicationException("Article response is null");
+
+            this.totalResults = this.newsApiResponse.getTotalResults();
+            this.newsArticles = this.newsApiResponse.getArticles()
+                    .stream()
+                    .map(article -> new NewsArticle.Builder()
+                            .title(article.getTitle())
+                            .author(article.getAuthor())
+                            .description(article.getDescription())
+                            .publishedAt(article.getPublishedAt())
+                            .build()
+                    )
+                    .collect(Collectors.toList());
+            return this;
+
     }
 
     /**

@@ -1,0 +1,21 @@
+#! /usr/bin/groovy
+pipeline{
+    agent any
+    stages{
+        stage("Test"){
+            steps{
+                echo("Unit Testing")
+                unitTesting()
+            }
+        }
+        stage("Deploy"){
+            steps(){
+                echo("Deploying")
+                sh "docker run hello-world"
+            }
+        }
+    }
+}
+
+function  unitTesting(){
+}

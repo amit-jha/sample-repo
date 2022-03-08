@@ -1,6 +1,7 @@
 package com.aj.newsapi.vo;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,5 +18,8 @@ public class NewsArticleRequestBody {
 
     @JsonProperty(value = "intervalValue")
     private int intervalValue;
+
+    @JsonIgnore
+    private String url;
 
 }
