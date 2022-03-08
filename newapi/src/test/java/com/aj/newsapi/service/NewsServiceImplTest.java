@@ -87,7 +87,6 @@ class NewsServiceImplTest {
         requestBody.setKeyword("apple");
 
 
-
         NewsServiceConfiguration mockConfiguration = mock(NewsServiceConfiguration.class);
         mockConfiguration.setAccessKey(any(String.class));
         mockHttpClient = mock(NewsApiHttpClient.class, withSettings().useConstructor(configuration));
