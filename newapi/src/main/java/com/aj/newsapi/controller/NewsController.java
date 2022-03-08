@@ -6,7 +6,11 @@ import com.aj.newsapi.service.NewsServiceImpl;
 import com.aj.newsapi.util.NewsApiResponse;
 import com.aj.newsapi.vo.NewsArticleRequestBody;
 import com.aj.newsapi.vo.NewsArticleResponse;
-import com.kwabenaberko.newsapilib.models.response.ArticleResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +36,15 @@ public class NewsController {
     }
 
 
+    @Operation(summary = "Get news articles based on query")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "News articles retrieved",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = NewsArticleResponse.class )) }),
+            @ApiResponse(responseCode = "500", description = "Internal server error",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "News articles not found",
+                    content = @Content) })
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping(path = "/news")
     public NewsArticleResponse news(@RequestBody NewsArticleRequestBody requestBody) {

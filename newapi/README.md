@@ -2,6 +2,23 @@
 1. Java 11
 2. SpringBoot 2.6.3
 
+### Documentation
+   1. Swagger[TODO]
+   2. JavaDoc
+   3. 
+### NFR 
+   1. Security - Using key to access API/Encryption
+   2. Logging
+   3. Exception Handling
+   4. Tracing
+   5. Circuit Breaker
+   
+### CI/CD
+   1. Jenkinsfile
+   2. Dockerfile
+   3. Test
+   4. Ready to deploy on different env
+
 
 ### Deployment Instruction
 1. Config Server 

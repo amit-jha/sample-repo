@@ -37,8 +37,6 @@ public class NewsApiEverythingRequest {
         private String pageSize;
         private String page;
 
-        public Builder() {
-        }
 
         public NewsApiEverythingRequest.Builder q(String q) {
             this.q = q;

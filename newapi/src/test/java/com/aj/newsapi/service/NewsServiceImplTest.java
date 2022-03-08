@@ -6,7 +6,6 @@ import com.aj.newsapi.util.NewsApiEverythingRequest;
 import com.aj.newsapi.util.NewsApiHttpClient;
 import com.aj.newsapi.util.NewsApiResponse;
 import com.aj.newsapi.vo.NewsArticleRequestBody;
-import com.aj.newsapi.vo.NewsArticleResponse;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,11 +14,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.withSettings;
 
 @ExtendWith(MockitoExtension.class)
 class NewsServiceImplTest {

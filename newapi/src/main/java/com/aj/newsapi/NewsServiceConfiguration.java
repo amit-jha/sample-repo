@@ -29,7 +29,7 @@ public class NewsServiceConfiguration {
 
    @Bean
     public NewsApiClient initializeClient(){
-//       Assert.notNull(this.accessKey, "NewsApi key cannot be null");
+       Assert.notNull(this.accessKey, "NewsApi key cannot be null");
        return new NewsApiClient(this.accessKey);
     }
 }
