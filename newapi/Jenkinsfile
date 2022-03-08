@@ -5,7 +5,7 @@ pipeline{
         stage("Test"){
             steps{
                 echo("Testing")
-                sh 'mvn clean test'
+                unitTest()
                
             }
         }
@@ -20,5 +20,11 @@ pipeline{
                 echo("Deploying")
             }
         }
+    }
+}
+
+def unitTest(){
+    dir('newapi'){
+        sh 'mvn clean test'
     }
 }
