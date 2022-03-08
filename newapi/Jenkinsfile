@@ -4,6 +4,8 @@ pipeline{
     stages{
         stage("Test"){
             steps{
+                echo("Testing")
+                sh 'mvn clean test'
                 unitTesting()
             }
         }
@@ -22,6 +24,5 @@ pipeline{
 }
 
 def unitTesting(){
-    readpom = readMavenPom file: 'project/newapi/pom.xml'
-    sh "mvn clean test project/newapi/pom.xml"
+    sh "mvn clean test"
 }
