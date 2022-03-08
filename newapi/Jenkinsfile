@@ -21,6 +21,11 @@ pipeline{
             }
         }
     }
+    post {
+            always {
+                junit 'taget/surefire-reports/**/*.xml'
+            }
+        }
 }
 
 def unitTest(){
