@@ -23,7 +23,8 @@ pipeline{
     }
     post {
             always {
-                junit 'target/surefire-reports/*.xml'
+                publishReport()
+
             }
         }
 }
@@ -31,5 +32,11 @@ pipeline{
 def unitTest(){
     dir('newapi'){
         sh 'mvn clean test'
+    }
+}
+
+def publishReport(){
+    dir('newapi'){
+        junit 'target/surefire-reports/*.xml'
     }
 }
