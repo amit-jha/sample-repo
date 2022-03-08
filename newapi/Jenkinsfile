@@ -6,7 +6,7 @@ pipeline{
             steps{
                 echo("Testing")
                 sh 'mvn clean test'
-                unitTesting()
+               
             }
         }
         stage("Coverage"){
@@ -21,8 +21,4 @@ pipeline{
             }
         }
     }
-}
-
-def unitTesting(){
-    sh "mvn clean test"
 }
