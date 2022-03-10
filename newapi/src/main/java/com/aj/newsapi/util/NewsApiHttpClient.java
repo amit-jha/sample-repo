@@ -33,16 +33,17 @@ public class NewsApiHttpClient {
     }
 
     public NewsApiResponse getResult(NewsApiEverythingRequest request) throws ApplicationException {
-        URI uri = UriComponentsBuilder.fromUriString(URL)
-                .queryParam("apiKey", this.apiKey)
-                .queryParam("q", request.getQ())
-                .build()
-                .toUri();
-        HttpRequest httpRequest = HttpRequest.newBuilder()
-                .uri(uri)
-                .build();
-        HttpClient client = HttpClient.newHttpClient();
         try {
+            URI uri = UriComponentsBuilder.fromUriString(URL)
+                    .queryParam("apiKey", this.apiKey)
+                    .queryParam("q", request.getQ())
+                    .build()
+                    .toUri();
+            HttpRequest httpRequest = HttpRequest.newBuilder()
+                    .uri(uri)
+                    .build();
+            HttpClient client = HttpClient.newHttpClient();
+
             HttpResponse<String> httpResponse = client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
             return handleResponse(httpResponse.body());
         } catch (IOException e) {

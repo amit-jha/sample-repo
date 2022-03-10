@@ -17,6 +17,7 @@ import org.springframework.util.Assert;
 @Configuration
 @ConfigurationProperties(prefix = "newsapi")
 @Setter @Getter @ToString
+
 public class NewsServiceConfiguration {
     private String buildVersion;
     private String accessKey;
@@ -32,4 +33,6 @@ public class NewsServiceConfiguration {
        Assert.notNull(this.accessKey, "NewsApi key cannot be null");
        return new NewsApiClient(this.accessKey);
     }
+
+
 }

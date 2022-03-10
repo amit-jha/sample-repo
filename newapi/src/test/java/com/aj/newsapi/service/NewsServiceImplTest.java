@@ -2,6 +2,7 @@ package com.aj.newsapi.service;
 
 import com.aj.newsapi.NewsServiceConfiguration;
 import com.aj.newsapi.exceptions.ApplicationException;
+import com.aj.newsapi.exceptions.BusinessException;
 import com.aj.newsapi.util.NewsApiEverythingRequest;
 import com.aj.newsapi.util.NewsApiHttpClient;
 import com.aj.newsapi.util.NewsApiResponse;
@@ -17,8 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.withSettings;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class NewsServiceImplTest {
@@ -57,11 +57,19 @@ class NewsServiceImplTest {
     }
 
     @Test
-    public void testGetEverything() throws ApplicationException {
+    public void testGetEverything() throws ApplicationException, BusinessException {
         newsService = new NewsServiceImpl(client);
         newsService.newsArticles(requestBody);
-
+//        when(client.getResult(mockNewsApiEverythingRequest)).thenReturn(mockApiResponse);
     }
+
+    @Test
+    public void testBuildFormDate(){
+        NewsServiceImpl ns  = new NewsServiceImpl(client);
+        ns.buildFrom("hours", 5);
+    }
+
+
 
     /*@Test
     public void testMockGetEverything() throws ApplicationException {
@@ -84,6 +92,8 @@ class NewsServiceImplTest {
         client = new NewsApiHttpClient(configuration);
         requestBody = new NewsArticleRequestBody();
         requestBody.setKeyword("apple");
+        requestBody.setInterval("years");
+        requestBody.setIntervalValue(2);
 
 
         NewsServiceConfiguration mockConfiguration = mock(NewsServiceConfiguration.class);
@@ -92,6 +102,8 @@ class NewsServiceImplTest {
         mockNewsArticleRequestBody = mock(NewsArticleRequestBody.class);
         mockNewsArticleRequestBody.setKeyword("apple");
     }
+
+
 
 
     @AfterEach

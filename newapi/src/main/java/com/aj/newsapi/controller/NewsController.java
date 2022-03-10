@@ -1,6 +1,7 @@
 package com.aj.newsapi.controller;
 
 import com.aj.newsapi.exceptions.ApplicationException;
+import com.aj.newsapi.exceptions.BusinessException;
 import com.aj.newsapi.service.NewsService;
 import com.aj.newsapi.service.NewsServiceImpl;
 import com.aj.newsapi.util.NewsApiResponse;
@@ -48,14 +49,24 @@ public class NewsController {
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping(path = "/news")
     public NewsArticleResponse news(@RequestBody NewsArticleRequestBody requestBody) {
+        NewsArticleResponse r = new NewsArticleResponse();
+        LOGGER.info("news() method started");
         try {
-            NewsArticleResponse r = newsService.newsArticles(requestBody);
-            return r;
-        }catch (ApplicationException ae){
-            //TODO: Generic response can be passed.
+            LOGGER.info("news() method end");
+             r = newsService.newsArticles(requestBody);
+             return r;
+        }catch (ApplicationException e){
             LOGGER.error("Error while processing request");
-            return new NewsArticleResponse(new NewsApiResponse());
+            r.setStatus("500");
+            r.setStatus(e.getMessage());
+            return r;
+        }catch (BusinessException e){
+            LOGGER.error("Error while processing request");
+            r.setStatus("400");
+            r.setStatus(e.getMessage());
+            return r;
         }
+
 
     }
 

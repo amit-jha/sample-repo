@@ -5,12 +5,13 @@ import com.aj.newsapi.util.NewsApiResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
+import lombok.Setter;
 
+import java.time.Instant;
 import java.time.OffsetDateTime;
+import java.time.temporal.ChronoUnit;
 import java.time.temporal.IsoFields;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -30,6 +31,7 @@ import static java.util.stream.Collectors.groupingBy;
  */
 
 @Getter
+@Setter
 public class NewsArticleResponse {
 
     @JsonIgnore
@@ -44,11 +46,21 @@ public class NewsArticleResponse {
     @JsonProperty("groups")
     private Map<String, Map<String, List<NewsArticle>>> groupMap;
 
+    @JsonProperty("status")
+    private String status;
+
+    @JsonProperty("errorMessage")
+    private String errorMessage;
+
+
+    public NewsArticleResponse() {
+    }
 
     public NewsArticleResponse(NewsApiResponse newsApiResponse) {
         this.newsApiResponse = newsApiResponse;
         this.groupMap = new HashMap<>();
     }
+
 
     public NewsArticleResponse build() throws ApplicationException {
             if (this.newsApiResponse == null)
@@ -82,26 +94,22 @@ public class NewsArticleResponse {
             this.groupMap.put(interval.getName(), a);
         }
         return this;
-
     }
 
-    /**
-     *
-     * @param interval
-     * @param intervalValue
-     * @return
-     */
+    public NewsArticleResponse groupResultsByIntervals(String interval, int intervalValue) {
+        String key = "Last " + String.valueOf(intervalValue) +  " " + interval;
+        Optional<Interval> interval1 = Arrays.stream(Interval.values()).filter(i -> i.getName().equals(interval)).findFirst();
+        Instant lastInterval = Instant.now().truncatedTo(ChronoUnit.SECONDS).minus(Long.valueOf(intervalValue), interval1.get().getChronoUnit());
+        List<NewsArticleResponse.NewsArticle> articles = this.getNewsArticles()
+                    .stream()
+                    .filter(newsArticle -> Instant.parse(newsArticle.publishedAt).isAfter(lastInterval))
+                    .collect(Collectors.toList());
+        this.groupMap.put("Input Grouped Results", Map.of(key, articles));
+        return this;
+    }
 
-//    public NewsArticleResponse buildFacet(String interval, int intervalValue) {
-//        Map<String, List<NewsArticle>> e = this.getNewsArticles()
-//                .stream()
-//                .filter(newsArticle -> Integer.valueOf(newsArticle.intervalFieldMap.get(interval))equals(String.valueOf(intervalValue)))
-//                .collect(groupingBy(article -> article.intervalFieldMap.get(interval)));
-//        String key = "Last " + intervalValue + " " + interval;
-//        this.groupMap.put(key, e);
-//        this.groupResults();
-//        return this;
-//    }
+
+
 
     /**
      * This class represents an article.
@@ -252,23 +260,3 @@ final class IntervalField {
     }
 }
 
-@Getter
-enum Interval {
-    YEAR("year", "2022"),
-    MONTH("month", "1"),
-    WEEK("week", "1"),
-    DAY("day", "1"),
-    HOUR("hour", ""),
-    MINUTE("minute", "");
-
-
-    private String name;
-    private String defaultValue;
-
-    private Interval(String name, String defaultValue) {
-        this.name = name;
-        this.defaultValue = defaultValue;
-    }
-
-
-}

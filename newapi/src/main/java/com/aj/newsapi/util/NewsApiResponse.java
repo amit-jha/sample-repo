@@ -13,6 +13,12 @@ public class NewsApiResponse {
     private int totalResults;
     private List<NewsArticle> articles;
 
+    @JsonIgnore
+    private String code;
+
+    @JsonIgnore
+    private String message;
+
     @Getter
     @Setter
     public static class NewsArticle{
