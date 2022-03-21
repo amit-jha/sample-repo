@@ -1,0 +1,56 @@
+#! /usr/bin/groovy
+
+pipeline {
+    agent any
+    options{
+        disableConcurrentBuilds()
+    }
+    stages{
+        stage("Build Application"){
+            steps{
+                echo "Building application"
+                buildApp()
+            }
+        }
+        stage("Build Docker Image"){
+            steps{
+                echo "Building docker image"
+                buildImage()
+            }
+        }
+        stage("Deploy-Dev"){
+            steps{
+                echo "Deploying to dev"
+                deploy('dev')
+            }
+        }
+    }
+}
+
+def buildApp(){
+    sh 'mvn clean install'
+}
+
+def buildImage(){
+    def appImg = docker.build("shanu040/config-server:${BUILD_NUMBER}")
+}
+
+def deploy(environment) {
+
+    	def container_name = ''
+    	def port = ''
+    	def network = search-api-network
+
+    	if ("${environment}" == 'dev') {
+    		containerName = "config-server-dev"
+    		port = "4040"
+    	}
+    	else {
+    		println "Environment not valid"
+    		System.exit(0)
+    	}
+     	sh "docker network inspect ${network} > /dev/null 2>&1 || docker network create --subnet=192.20.0.0/16 ${network}"
+    	sh "docker ps -f name=${container_name} -q | xargs --no-run-if-empty docker stop"
+    	sh "docker ps -a -f name=${container_name} -q | xargs -r docker rm"
+    	sh "docker run --rm -d --name=${container_name} --network=${network} --ip 192.20.0.2 -p ${port}:4040 shanu040/config-server:${BUILD_NUMBER}"
+}
