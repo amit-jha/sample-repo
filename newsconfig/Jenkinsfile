@@ -28,7 +28,10 @@ pipeline {
 }
 
 def buildApp(){
-    sh 'mvn clean install'
+    dir('newsconfig'){
+        sh 'mvn clean install'
+    }
+
 }
 
 def buildImage(){
