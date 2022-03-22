@@ -39,7 +39,7 @@ def deploy(environment) {
 
     	def container_name = ''
     	def port = ''
-    	def network = search-api-network
+    	def network = 'search-api-network'
 
     	if ("${environment}" == 'dev') {
     		containerName = "config-server-dev"
