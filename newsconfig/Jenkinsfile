@@ -35,7 +35,9 @@ def buildApp(){
 }
 
 def buildImage(){
-    def appImg = docker.build("shanu040/config-server:${BUILD_NUMBER}")
+    dir('newsconfig'){
+        def appImg = docker.build("shanu040/config-server:${BUILD_NUMBER}")
+    }
 }
 
 def deploy(environment) {
