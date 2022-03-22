@@ -55,7 +55,7 @@ def deploy(environment) {
     		System.exit(0)
     	}
      	sh "docker network inspect ${network} > /dev/null 2>&1 || docker network create --subnet=192.20.0.0/16 ${network}"
-    	sh "docker ps -f name=${container_name} -q | xargs docker stop"
-    	sh "docker ps -a -f name=${container_name} -q | xargs docker rm"
+    	sh "docker ps -f name=${container_name} -q | xargs -r docker stop"
+    	sh "docker ps -a -f name=${container_name} -q | xargs -r docker rm"
     	sh "docker run --rm -d --name=${container_name} --network=${network} --ip 192.20.0.2 -p ${port}:4040 shanu040/config-server:${BUILD_NUMBER}"
 }
